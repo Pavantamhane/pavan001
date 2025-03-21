@@ -168,10 +168,15 @@
     <div class="product-container">
         {% for pro in prod %}
             <div class="product-card">
-                <img src="{{ pro.image_url }}" alt="{{ pro.name }}">
+                {% if pro.image %}
+                    <img src="{{ pro.image.url }}" alt="{{ pro.name }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/300x300.png?text=No+Image" alt="No Image Available">
+                {% endif %}
                 <h2>{{ pro.name }}</h2>
                 <p class="price">${{ pro.price }}</p>
                 <p>{{ pro.description }}</p>
+    
                 <a href="{% url 'update_product' pro.id %}">
                     <button type="button">Update</button>
                 </a>
@@ -181,10 +186,13 @@
             </div>
         {% endfor %}
     </div>
+    
+
+
 
     <div class="form-container">
         <h3>Add Product to Cart</h3>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Add to Cart">
